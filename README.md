@@ -1,2 +1,2 @@
 # Documentation:
-> `https://docs.orume.id/orume-api`
+> https://docs.orume.id/orume-api
