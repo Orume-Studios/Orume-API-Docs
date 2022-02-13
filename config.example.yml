@@ -47,9 +47,16 @@ modules:
     modelName: license_models
     path: /license
 middlewares:
+  underAttack:
+    enable: true
+    maxConnections: 20
+    whitelistedIps: ["127.0.0.1"]
+    userAgents: ["PostmanRuntime/7.29.0"]
+    timeRemoval: 1
   rateLimit:
     enable: true
     whitelistedIps: ["127.0.0.1"]
+    userAgents: ["PostmanRuntime/7.29.0"]
     maxIpAddresses: 20
     limits:
       second:
@@ -71,7 +78,6 @@ middlewares:
   userAgent:
     all:
       enable: true
-      enableOnUnderAttack: true
       userAgents: ["PostmanRuntime/7.29.0"]
     admin:
       enable: false
@@ -79,7 +85,6 @@ middlewares:
   ipWhitelist:
     all:
       enable: false
-      enableOnUnderAttack: true
       whitelistedIps:
         - ::1
     admin:
