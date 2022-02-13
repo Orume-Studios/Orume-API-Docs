@@ -49,7 +49,7 @@ modules:
 middlewares:
   underAttack:
     enable: true
-    maxConnections: 20
+    maxConnections: 500
     whitelistedIps: ["127.0.0.1"]
     userAgents: ["PostmanRuntime/7.29.0"]
     timeRemoval: 1
@@ -57,7 +57,7 @@ middlewares:
     enable: true
     whitelistedIps: ["127.0.0.1"]
     userAgents: ["PostmanRuntime/7.29.0"]
-    maxIpAddresses: 20
+    maxIpAddresses: 300
     limits:
       second:
         enable: true
