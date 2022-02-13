@@ -1,0 +1,90 @@
+#
+#
+#   ██████╗ ██████╗ ██╗   ██╗███╗   ███╗███████╗     █████╗ ██████╗ ██╗
+#  ██╔═══██╗██╔══██╗██║   ██║████╗ ████║██╔════╝    ██╔══██╗██╔══██╗██║
+#  ██║   ██║██████╔╝██║   ██║██╔████╔██║█████╗      ███████║██████╔╝██║
+#  ██║   ██║██╔══██╗██║   ██║██║╚██╔╝██║██╔══╝      ██╔══██║██╔═══╝ ██║
+#  ╚██████╔╝██║  ██║╚██████╔╝██║ ╚═╝ ██║███████╗    ██║  ██║██║     ██║
+#   ╚═════╝ ╚═╝  ╚═╝ ╚═════╝ ╚═╝     ╚═╝╚══════╝    ╚═╝  ╚═╝╚═╝     ╚═╝
+#
+# Docs: https://docs.orume.id/orume-api
+# Copyright (c) 2022 - Orume Studios
+licenseKey: "YOUR_LICENSE_KEY"
+system:
+  cronSchedule: ""
+  database:
+    dialect: mysql
+    localPath: ""
+    param: charset=utf8&parseTime=true
+    credentials:
+      username: "USERNAME"
+      password: "PASSWORD"
+      host: "HOSTNAME"
+      port: "PORT"
+      databaseName: "DATABASE_NAME"
+    gormConfig:
+      skipDefaultTransaction: false
+      fullSaveAssociations: false
+      dryRun: false
+      prepareStmt: false
+      disableAutomaticPing: false
+      disableForeignKeyConstraintWhenMigrating: false
+      disableNestedTransaction: false
+      allowGlobalUpdate: false
+      queryFields: false
+      createBatchSize: 1024
+      logger: true
+  authentication:
+    defaultUser:
+      username: test
+      password: test
+    sessionTime: 300
+    secretKey: "YOUR_AUTH_SECRET_KEY"
+    encryptionKey: "YOUR_ENCRYPTION_KEY"
+modules:
+  license:
+    enable: true
+    modelName: license_models
+    path: /license
+middlewares:
+  rateLimit:
+    enable: true
+    whitelistedIps: ["127.0.0.1"]
+    maxIpAddresses: 20
+    limits:
+      second:
+        enable: true
+        maxRequest: 10
+        coolDown: 120
+      minute:
+        enable: true
+        maxRequest: 50
+        coolDown: 20
+      hour:
+        enable: false
+        maxRequest: 10
+        coolDown: 10
+      day:
+        enable: false
+        maxRequest: 10
+        coolDown: 10
+  userAgent:
+    all:
+      enable: true
+      enableOnUnderAttack: true
+      userAgents: ["PostmanRuntime/7.29.0"]
+    admin:
+      enable: false
+      userAgents: ["PostmanRuntime/7.29.0"]
+  ipWhitelist:
+    all:
+      enable: false
+      enableOnUnderAttack: true
+      whitelistedIps:
+        - ::1
+    admin:
+      enable: false
+      whitelistedIps:
+        - '::1'
+  logger:
+    enable: true
