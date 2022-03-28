@@ -15,7 +15,7 @@ system:
   dataPath: "./data"
   orumeApi:
     configFile: "./config.yml"
-    systemPort: 20202
+    serverPort: 20202
   database:
     dialect: "mysql"
     localPath: "test.sq"
