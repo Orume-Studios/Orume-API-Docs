@@ -9,16 +9,20 @@
 #
 # Docs: https://docs.orume.id/documentations/orume-api/introduction
 # Copyright (c) 2022 - Orume Studios
-licenseKey: "hohoho"
+licenseKey: "YOUR_LICENSE_KEY"
 system:
-  cronSchedule: ""
-  dataPath: "./data"
+  # Temporary / Logs filepath
+  tempPath: "./temp"
   orumeApi:
-    configFile: "./config.yml"
-    serverPort: 20202
+    # Max thread to be used for the api
+    maxThreads: 6
+    serverPort: 8080
+    # Forwards real ip address, if trustedProxies contains proxy's ip 
+    trustedProxies: [ "PROXY_IPV4_OR_IPV6" ]
   database:
+    # options: sqlite, mysql, postgres, sqlserver, clickhouse
+    # recommended: mysql
     dialect: "mysql"
-    localPath: "test.sq"
     param: "charset=utf8&parseTime=true"
     credentials:
       username: "YOUR_DATABASE_USERNAME"
@@ -26,11 +30,12 @@ system:
       host: "YOUR_DATABASE_HOST"
       port: "YOUR_DATABASE_PORT"
       databaseName: "YOUR_DATABASE_NAME"
+    # reference: https://gorm.io/docs/gorm_config.html#content-inner
     gormConfig:
-      skipDefaultTransaction: false
+      skipDefaultTransaction: true
       fullSaveAssociations: false
       dryRun: false
-      prepareStmt: false
+      prepareStmt: true
       disableAutomaticPing: false
       disableForeignKeyConstraintWhenMigrating: false
       disableNestedTransaction: false
@@ -39,24 +44,32 @@ system:
       createBatchSize: 1024
       logger: true
   authentication:
+    # the default admin user for authentication
     defaultUser:
       username: admin
       password: YOUR_ADMIN_PASSWORD
+    # max session per authentication session in seconds
     sessionTime: 300
+    # the JWT Secret Key for Authentication
     secretKey: YOUR_SECRET_KEY
+    # the Encryption Key for database data encryptions, PLEASE DO NOT LOSE IT AT ALL COST!
     encryptionKey: YOUR_ENCRYPTION_KEY
 modules:
   license:
     enable: true
     modelName: license_models
+    hardwareTimeRemoval: 60
+    hardwareTimeOut: 120
     path: /license
-  wallet:
-    enable: true
+
 middlewares:
   underAttack:
     enable: false
     maxConnections: 1000
-    timeRemoval: 1
+    timeRemoval: 100
+    logAttack: true
+    whitelistedIps: ["WHITELISTED-IP"]
+    userAgents: ["USER-AGENT"]
   rateLimit:
     enable: false
     whitelistedIps: ["127.0.0.1"]
@@ -64,37 +77,43 @@ middlewares:
     limits:
       second:
         enable: true
+        # max request per second
         maxRequest: 10
-        coolDown: 120
+        # cooldown in seconds
+        coolDown: 12
       minute:
         enable: true
+        # max request per minute
         maxRequest: 50
+        # cooldown in seconds
         coolDown: 20
       hour:
         enable: false
+        # max request per second
         maxRequest: 10
+        # cooldown in seconds
         coolDown: 10
       day:
         enable: false
+        # max request per day
         maxRequest: 10
+        # cooldown in seconds
         coolDown: 10
   userAgent:
     all:
       enable: false
-      enableOnUnderAttack: false
-      userAgents: ["PostmanRuntime/7.29.0"]
+      userAgents: [""]
     admin:
       enable: false
-      userAgents: ["PostmanRuntime/7.29.0"]
+      userAgents: [""]
   ipWhitelist:
     all:
       enable: false
-      enableOnUnderAttack: true
-      whitelistedIps:
-        - "118.99.110.226"
+      whitelistedIps: [""]
+      blacklistedIps: [""]
     admin:
       enable: false
-      whitelistedIps:
-        - '::1'
+      whitelistedIps: [""]
+      blacklistedIps: [""]
   logger:
     enable: true
